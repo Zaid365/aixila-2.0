@@ -1,12 +1,42 @@
 
-import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowRight, LogIn, CheckCircle, Settings } from 'lucide-react';
 
 interface FooterProps {
   onOpenModal: () => void;
 }
 
 const Footer: React.FC<FooterProps> = ({ onOpenModal }) => {
+  const [isSynced, setIsSynced] = useState(!!localStorage.getItem('google_calendar_token'));
+
+  const handleSyncCalendar = () => {
+    /* 
+       REPLACE THE CLIENT_ID BELOW WITH YOUR ACTUAL CLIENT ID FROM GOOGLE CLOUD CONSOLE
+       Format: "YOUR_ID.apps.googleusercontent.com"
+    */
+    const CLIENT_ID = '685419888989-demo-placeholder.apps.googleusercontent.com';
+
+    try {
+      const client = (window as any).google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID, 
+        scope: 'https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.readonly',
+        callback: (response: any) => {
+          if (response.access_token) {
+            localStorage.setItem('google_calendar_token', response.access_token);
+            // Also store expiration (usually 1 hour)
+            localStorage.setItem('google_token_expiry', (Date.now() + 3500000).toString());
+            setIsSynced(true);
+            window.location.reload(); // Refresh to update availability in modal
+          }
+        },
+      });
+      client.requestAccessToken();
+    } catch (err) {
+      console.error("Google Client failed to initialize. Ensure scripts are loaded.", err);
+      alert("Please check your internet connection or Google Cloud configuration.");
+    }
+  };
+
   return (
     <footer className="bg-white pt-12 pb-12">
       <div className="container mx-auto px-4">
@@ -24,7 +54,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenModal }) => {
           </p>
           <button 
             onClick={onOpenModal}
-            className="bg-[#1b5e4a] text-white px-12 py-5 rounded-2xl font-bold text-xl hover:bg-emerald-700 transition-all flex items-center gap-2 mx-auto relative z-10 shadow-2xl"
+            className="bg-[#1b5e4a] text-white px-12 py-5 rounded-2xl font-bold text-xl hover:bg-emerald-700 transition-all flex items-center gap-2 mx-auto relative z-10 shadow-2xl active:scale-95"
           >
             Let's Talk
             <ArrowRight size={24} />
@@ -49,10 +79,10 @@ const Footer: React.FC<FooterProps> = ({ onOpenModal }) => {
           <div>
             <h4 className="font-bold text-black mb-8 uppercase tracking-widest text-xs">Services</h4>
             <ul className="space-y-4">
-              <li><a href="#" className="text-black font-bold hover:text-black/70 transition-colors">Lead Research</a></li>
-              <li><a href="#" className="text-black font-bold hover:text-black/70 transition-colors">Multi-Channel Outreach</a></li>
-              <li><a href="#" className="text-black font-bold hover:text-black/70 transition-colors">Meeting Qualification</a></li>
-              <li><a href="#" className="text-black font-bold hover:text-black/70 transition-colors">ABM Campaigns</a></li>
+              <li><a href="#services" className="text-black font-bold hover:text-black/70 transition-colors">Lead Research</a></li>
+              <li><a href="#services" className="text-black font-bold hover:text-black/70 transition-colors">Multi-Channel Outreach</a></li>
+              <li><a href="#services" className="text-black font-bold hover:text-black/70 transition-colors">Meeting Qualification</a></li>
+              <li><a href="#services" className="text-black font-bold hover:text-black/70 transition-colors">ABM Campaigns</a></li>
             </ul>
           </div>
 
@@ -67,11 +97,31 @@ const Footer: React.FC<FooterProps> = ({ onOpenModal }) => {
           </div>
 
           <div>
-            <h4 className="font-bold text-black mb-8 uppercase tracking-widest text-xs">Connect</h4>
+            <h4 className="font-bold text-black mb-8 uppercase tracking-widest text-xs">Admin Connection</h4>
             <ul className="space-y-4">
-              <li><button onClick={onOpenModal} className="text-black font-bold hover:text-black/70 transition-colors text-left">Book a Call</button></li>
-              <li><a href="#" className="text-black font-bold hover:text-black/70 transition-colors">LinkedIn</a></li>
-              <li><a href="#" className="text-black font-bold hover:text-black/70 transition-colors">Twitter</a></li>
+              <li>
+                <button 
+                  onClick={handleSyncCalendar}
+                  className={`w-full flex items-center justify-center gap-2 font-bold transition-all px-4 py-3 rounded-xl border ${
+                    isSynced ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-gray-50 text-black border-gray-200 hover:border-black'
+                  }`}
+                >
+                  {isSynced ? <><CheckCircle size={16}/> Account Linked</> : <><LogIn size={16}/> Link Gmail Calendar</>}
+                </button>
+              </li>
+              {isSynced && (
+                <li>
+                  <button 
+                    onClick={() => { localStorage.clear(); window.location.reload(); }}
+                    className="text-[10px] font-bold text-red-500 uppercase tracking-widest hover:underline"
+                  >
+                    Disconnect Account
+                  </button>
+                </li>
+              )}
+              <li><button onClick={onOpenModal} className="text-black font-bold hover:text-black/70 transition-colors text-left flex items-center gap-2">
+                <Settings size={14} /> Test Modal
+              </button></li>
             </ul>
           </div>
         </div>

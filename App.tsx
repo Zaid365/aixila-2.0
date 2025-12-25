@@ -29,7 +29,8 @@ function App() {
       </main>
       <Footer onOpenModal={openModal} />
       
-      <LeadModal isOpen={isModalOpen} onClose={closeModal} />
+      {/* Conditionally render the modal to ensure stable DOM structure */}
+      {isModalOpen && <LeadModal isOpen={isModalOpen} onClose={closeModal} />}
     </div>
   );
 }
