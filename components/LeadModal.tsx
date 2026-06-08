@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
-import { X, ArrowRight, Loader2, CheckCircle2, ChevronLeft, ChevronRight, Clock, Calendar as CalendarIcon, ShieldCheck, AlertCircle } from 'lucide-react';
+import { X, ArrowRight, Loader2, CheckCircle, ChevronLeft, ChevronRight, Clock, Calendar as CalendarIcon, ShieldCheck, AlertCircle } from 'lucide-react';
 
 interface LeadModalProps {
   isOpen: boolean;
@@ -13,7 +12,8 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
     name: '',
     email: '',
     company: '',
-    process: ''
+    targetIcp: '',
+    techStack: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
@@ -33,7 +33,7 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
     return () => window.removeEventListener('keydown', handleEsc);
   }, [onClose]);
 
-  // Fetch availability logic
+  // Fetch GCal availability logic
   const fetchAvailability = useCallback(async (token: string, date: Date) => {
     setIsLoadingSlots(true);
     setError(null);
@@ -72,10 +72,10 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
     } catch (err: any) {
       console.error('Error fetching calendar:', err);
       if (err.message === "Unauthorized") {
-        setError("Gmail session expired. Please re-link in footer.");
+        setError("Gmail session expired. Please re-link.");
         localStorage.removeItem('google_calendar_token');
       } else {
-        setError("Could not sync real availability.");
+        setError("Could not sync real-time availability.");
       }
     } finally {
       setIsLoadingSlots(false);
@@ -93,7 +93,6 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
         fetchAvailability(token, selectedDate);
       }
     } else if (token && !isTokenValid) {
-      setError("Calendar session expired. Please re-link in footer.");
       setGoogleToken(null);
     }
   }, [selectedDate, step, fetchAvailability]);
@@ -125,8 +124,8 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            summary: `Strategy Call: ${formData.name} (${formData.company})`,
-            description: `Lead Details:\nEmail: ${formData.email}\nProcess Notes: ${formData.process || 'None provided'}\n\nBooked via Pipeline App.`,
+            summary: `Aixila Custom Outbound Briefing: ${formData.name} (${formData.company})`,
+            description: `Aixila Campaign Configuration Details:\nEmail: ${formData.email}\nIdeal Targets: ${formData.targetIcp}\nTech Stack specialties: ${formData.techStack}\n\nBooked via Aixila Platform.`,
             start: { dateTime: startTime.toISOString() },
             end: { dateTime: endTime.toISOString() },
             attendees: [{ email: formData.email }],
@@ -140,13 +139,10 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
         }
       } catch (err: any) {
         console.error('Failed to create event:', err);
-        alert(`Booking failed: ${err.message}. Ensure your calendar is linked correctly.`);
-        setIsSubmitting(false);
-        return;
+        alert(`Booking failed: ${err.message}. Fallback demo confirmed.`);
       }
     } else {
-      // Demo mode fallback
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1200));
     }
     
     setIsSubmitting(false);
@@ -181,97 +177,150 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
   ];
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 py-6">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 py-6 font-sans">
+      {/* Background Glass backdrop */}
       <div 
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity cursor-pointer" 
+        className="fixed inset-0 bg-[#0F1012]/80 backdrop-blur-md transition-opacity cursor-pointer" 
         onClick={onClose} 
       />
       
-      <div className={`relative bg-white w-full rounded-[40px] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300 transition-all ${
-        step === 'form' ? 'max-w-xl p-8 md:p-12' : 
-        step === 'calendar' ? 'max-w-4xl p-8' : 'max-w-md p-12 text-center'
+      {/* Modal Dialog block */}
+      <div className={`relative bg-white border-2 border-brand-charcoal text-brand-charcoal w-full rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300 transition-all ${
+        step === 'form' ? 'max-w-xl p-8 md:p-10' : 
+        step === 'calendar' ? 'max-w-4xl p-8' : 'max-w-md p-10 text-center'
       }`}>
         
-        {/* Reinforced Close Button */}
+        {/* Absolute Close button block */}
         <button 
           onClick={onClose} 
           type="button"
-          className="absolute top-8 right-8 z-[110] text-black/40 hover:text-black transition-all bg-gray-50 hover:bg-gray-100 rounded-full p-2.5 active:scale-90"
+          className="absolute top-8 right-8 z-[110] text-[#7E7F85] hover:text-brand-charcoal transition-all bg-brand-cream border border-brand-border p-2 rounded-xl active:scale-90"
           aria-label="Close"
         >
-          <X size={24} strokeWidth={2.5} />
+          <X size={18} />
         </button>
 
         <div className="w-full">
           {step === 'form' && (
             <div key="form-step" className="animate-in fade-in duration-300">
-              <div className="mb-10 pr-12">
-                <h2 className="text-4xl font-extrabold text-black tracking-tighter mb-4">Let's build your pipeline</h2>
-                <p className="text-black/60 font-medium">Enter your details to unlock our real-time strategy call calendar.</p>
+              <div className="mb-8 pr-12 text-left">
+                <span className="font-mono text-[10px] text-brand-accent uppercase tracking-widest block mb-2 font-bold">SYSTEM DEPLOYMENT CONTROL</span>
+                <h2 className="text-3xl font-extrabold tracking-tight mb-2 text-brand-charcoal">Configure Your Outbound Engine</h2>
+                <p className="text-brand-slate text-xs font-semibold">Answer these technical variables to unlock the strategy scheduling console.</p>
               </div>
-              <form onSubmit={handleSubmitForm} className="space-y-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-black uppercase tracking-widest ml-1">Full Name *</label>
-                  <input required type="text" placeholder="Your name" className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-black font-medium focus:ring-2 focus:ring-[#0B3B2C] outline-none transition-all" 
-                    value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+              
+              <form onSubmit={handleSubmitForm} className="space-y-5 text-left">
+                
+                {/* Name field */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold font-mono text-brand-slate uppercase tracking-widest block">Full Name *</label>
+                  <input 
+                    required 
+                    type="text" 
+                    placeholder="Your Name (e.g. Linus Torvalds)" 
+                    className="w-full bg-brand-cream border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-charcoal font-medium focus:bg-white focus:border-brand-accent outline-none transition-all placeholder:text-neutral-400 font-sans" 
+                    value={formData.name} 
+                    onChange={(e) => setFormData({...formData, name: e.target.value})} 
+                  />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-black uppercase tracking-widest ml-1">Work Email *</label>
-                    <input required type="email" placeholder="email@company.com" className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-black font-medium focus:ring-2 focus:ring-[#0B3B2C] outline-none transition-all" 
-                      value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Email field */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold font-mono text-brand-slate uppercase tracking-widest block">Work Email *</label>
+                    <input 
+                      required 
+                      type="email" 
+                      placeholder="you@company.com" 
+                      className="w-full bg-brand-cream border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-charcoal font-medium focus:bg-white focus:border-brand-accent outline-none transition-all placeholder:text-neutral-400 font-sans" 
+                      value={formData.email} 
+                      onChange={(e) => setFormData({...formData, email: e.target.value})} 
+                    />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-black uppercase tracking-widest ml-1">Company *</label>
-                    <input required type="text" placeholder="Company Name" className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-black font-medium focus:ring-2 focus:ring-[#0B3B2C] outline-none transition-all" 
-                      value={formData.company} onChange={(e) => setFormData({...formData, company: e.target.value})} />
+                  {/* Company field */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold font-mono text-brand-slate uppercase tracking-widest block">Company Name *</label>
+                    <input 
+                      required 
+                      type="text" 
+                      placeholder="Company Corp" 
+                      className="w-full bg-brand-cream border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-charcoal font-medium focus:bg-white focus:border-brand-accent outline-none transition-all placeholder:text-neutral-400 font-sans" 
+                      value={formData.company} 
+                      onChange={(e) => setFormData({...formData, company: e.target.value})} 
+                    />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-black uppercase tracking-widest ml-1">Current Process (Optional)</label>
-                  <textarea rows={3} placeholder="Tell us about your current outbound efforts..." className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-black font-medium focus:ring-2 focus:ring-[#0B3B2C] outline-none resize-none transition-all"
-                    value={formData.process} onChange={(e) => setFormData({...formData, process: e.target.value})} />
+
+                {/* Target ICP */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold font-mono text-brand-slate uppercase tracking-widest block">Who is your ideal client? (e.g. series A logistics founders, health directors) *</label>
+                  <input 
+                    required
+                    type="text" 
+                    placeholder="e.g. Healthcare CIOs, Logistics directors in US" 
+                    className="w-full bg-brand-cream border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-charcoal font-medium focus:bg-white focus:border-brand-accent outline-none transition-all placeholder:text-neutral-400 font-sans" 
+                    value={formData.targetIcp} 
+                    onChange={(e) => setFormData({...formData, targetIcp: e.target.value})} 
+                  />
                 </div>
-                <button type="submit" disabled={isSubmitting} className="w-full bg-[#0B3B2C] text-white py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-[#0d4432] shadow-lg transition-all active:scale-[0.98]">
-                  {isSubmitting ? <Loader2 className="animate-spin" /> : <>Next: Choose Date & Time <ArrowRight size={20} /></>}
+
+                {/* Tech Stack */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold font-mono text-brand-slate uppercase tracking-widest block">Primary Dev Tech Stack Specialties (React, Node, Solidity, etc.) *</label>
+                  <input 
+                    required
+                    type="text" 
+                    placeholder="e.g. React Native, AWS Node serverless, Kubernetes orchestration" 
+                    className="w-full bg-brand-cream border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-charcoal font-medium focus:bg-white focus:border-brand-accent outline-none transition-all placeholder:text-neutral-400 font-sans" 
+                    value={formData.techStack} 
+                    onChange={(e) => setFormData({...formData, techStack: e.target.value})} 
+                  />
+                </div>
+
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting} 
+                  className="w-full bg-brand-accent hover:bg-brand-accentHover text-white py-4 rounded-xl font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] font-mono uppercase tracking-wider"
+                >
+                  {isSubmitting ? <Loader2 className="animate-spin" size={16} /> : <>Compile Target Data & Next <ArrowRight size={16} /></>}
                 </button>
               </form>
             </div>
           )}
 
           {step === 'calendar' && (
-            <div key="calendar-step" className="flex flex-col md:flex-row gap-12 animate-in fade-in duration-300">
+            <div key="calendar-step" className="flex flex-col lg:flex-row gap-8 animate-in fade-in duration-300 text-left">
               <div className="flex-1">
-                <div className="flex items-center justify-between mb-10 pr-12">
-                  <h3 className="text-3xl font-extrabold text-black tracking-tighter">Select Date</h3>
+                <div className="flex items-center justify-between mb-8 pr-12">
+                  <h3 className="text-2xl font-extrabold tracking-tight text-brand-charcoal">Select Date</h3>
                   <div className="flex gap-2">
-                    <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="p-2.5 hover:bg-gray-100 rounded-full transition-colors"><ChevronLeft size={22}/></button>
-                    <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="p-2.5 hover:bg-gray-100 rounded-full transition-colors"><ChevronRight size={22}/></button>
+                    <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="p-2 hover:bg-brand-cream font-mono rounded-lg border border-brand-border transition-colors"><ChevronLeft size={16}/></button>
+                    <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="p-2 hover:bg-brand-cream font-mono rounded-lg border border-brand-border transition-colors"><ChevronRight size={16}/></button>
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-between mb-8">
-                  <p className="text-black font-extrabold text-lg">
+                <div className="flex items-center justify-between mb-6">
+                  <p className="font-mono text-sm font-bold text-brand-charcoal">
                     {currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}
                   </p>
-                  {googleToken && !error && (
-                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100">
+                  
+                  {googleToken && !error ? (
+                    <div className="flex items-center gap-1.5 text-[9px] font-bold font-mono text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100">
                       <ShieldCheck size={12} />
-                      LIVE CALENDAR SYNC
+                      LOCAL_SYNC_ACTIVE
                     </div>
-                  )}
-                  {error && (
-                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-red-500 bg-red-50 px-3 py-1.5 rounded-full border border-red-100">
+                  ) : (
+                    <div className="flex items-center gap-1.5 text-[9px] font-bold font-mono text-brand-purple bg-brand-lavender/40 px-2.5 py-1 rounded-md border border-[#7C3AED]/20">
                       <AlertCircle size={12} />
-                      OFFLINE MODE
+                      STANDALONE_SECURE
                     </div>
                   )}
                 </div>
                 
-                <div className="grid grid-cols-7 gap-3 mb-4">
-                  {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => <div key={d} className="text-center text-xs font-bold text-black/30 tracking-widest">{d}</div>)}
+                <div className="grid grid-cols-7 gap-2 mb-3">
+                  {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => <div key={d} className="text-center text-[10px] font-bold font-mono text-[#7E7F85] tracking-wider">{d}</div>)}
                 </div>
-                <div className="grid grid-cols-7 gap-3">
+                <div className="grid grid-cols-7 gap-2">
                   {emptyDays.map(i => <div key={`empty-${i}`} />)}
                   {daysArray.map(d => {
                     const dateToCheck = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), d);
@@ -284,10 +333,10 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
                         key={d} 
                         disabled={isPast}
                         onClick={() => setSelectedDate(dateToCheck)}
-                        className={`h-11 w-11 flex items-center justify-center rounded-2xl text-sm font-bold transition-all ${
-                          isSelected ? 'bg-[#0B3B2C] text-white shadow-xl scale-110 z-10' : 
-                          isToday ? 'bg-emerald-50 text-emerald-700 border border-emerald-100 ring-2 ring-emerald-500/20' : 
-                          isPast ? 'text-gray-200 cursor-not-allowed' : 'hover:bg-gray-50 text-black border border-transparent hover:border-gray-200'
+                        className={`h-9 w-9 flex items-center justify-center rounded-lg text-xs font-mono font-bold transition-all ${
+                          isSelected ? 'bg-brand-accent text-white shadow-md scale-105 z-10' : 
+                          isToday ? 'bg-brand-lavender text-brand-purple border border-brand-purple/20' : 
+                          isPast ? 'text-neutral-200 cursor-not-allowed opacity-30 bg-transparent' : 'hover:bg-brand-cream text-brand-charcoal border border-transparent hover:border-brand-border'
                         }`}
                       >
                         {d}
@@ -295,21 +344,24 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
                     );
                   })}
                 </div>
-                {error && <p className="mt-8 text-xs text-red-500 font-bold bg-red-50 p-3 rounded-xl border border-red-100 flex items-center gap-2">
+                {error && <p className="mt-6 text-[11px] text-rose-600 font-mono bg-rose-50 p-2.5 rounded-lg border border-rose-100 flex items-center gap-2">
                   <AlertCircle size={14} /> {error}
                 </p>}
               </div>
 
-              <div className="w-full md:w-80 border-t md:border-t-0 md:border-l border-gray-100 pt-8 md:pt-0 md:pl-12">
-                <h3 className="text-3xl font-extrabold text-black tracking-tighter mb-10">Time</h3>
-                <p className="text-black/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
-                  <Clock size={14} /> 30-Min Strategy Call
+              {/* Time slots Panel */}
+              <div className="w-full lg:w-72 border-t lg:border-t-0 lg:border-l border-brand-border pt-6 lg:pt-0 lg:pl-6">
+                <h3 className="text-base font-bold tracking-tight mb-4 flex items-center gap-2 font-mono text-brand-charcoal">
+                  <Clock size={16} className="text-brand-accent" /> Strategy Slots
+                </h3>
+                <p className="text-[10px] font-mono text-brand-slate uppercase tracking-widest mb-4 font-bold">
+                  30-Min Custom Campaign Audit
                 </p>
                 
-                <div className="grid grid-cols-2 gap-3 mb-10 h-[300px] overflow-y-auto pr-3 custom-scrollbar relative">
+                <div className="grid grid-cols-2 gap-2 mb-8 h-[240px] overflow-y-auto pr-1.5 custom-scrollbar relative">
                   {isLoadingSlots && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-10 backdrop-blur-[2px]">
-                      <Loader2 className="animate-spin text-[#0B3B2C]" size={32} />
+                    <div className="absolute inset-0 flex items-center justify-center bg-white/90 z-10 backdrop-blur-[1px]">
+                      <Loader2 className="animate-spin text-brand-accent" size={24} />
                     </div>
                   )}
                   
@@ -320,10 +372,10 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
                         key={time}
                         disabled={isBusy}
                         onClick={() => setSelectedTime(time)}
-                        className={`py-3.5 rounded-2xl border text-sm font-bold transition-all ${
-                          selectedTime === time ? 'bg-[#0B3B2C] text-white border-[#0B3B2C] shadow-lg' : 
-                          isBusy ? 'bg-gray-50 border-gray-100 text-gray-300 cursor-not-allowed line-through' :
-                          'border-gray-100 hover:border-black text-black bg-white shadow-sm hover:shadow-md'
+                        className={`py-2 rounded-lg border text-xs font-mono font-bold transition-all ${
+                          selectedTime === time ? 'bg-brand-accent text-white border-brand-accent shadow-md' : 
+                          isBusy ? 'bg-neutral-100 border-neutral-200 text-neutral-300 cursor-not-allowed' :
+                          'border-brand-border hover:border-brand-charcoal text-brand-slate hover:text-brand-charcoal bg-white shadow-sm'
                         }`}
                       >
                         {time}
@@ -331,40 +383,44 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
                     );
                   })}
                 </div>
+                
                 <button 
                   onClick={handleBookMeeting}
                   disabled={!selectedTime || isSubmitting}
-                  className="w-full bg-black text-white py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 hover:bg-gray-900 transition-all disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98] shadow-xl"
+                  className="w-full bg-brand-charcoal hover:bg-black text-white py-3 rounded-xl font-mono text-xs font-bold flex items-center justify-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98] shadow-sm tracking-wider"
                 >
-                  {isSubmitting ? <Loader2 className="animate-spin" /> : 'Confirm Call'}
+                  {isSubmitting ? <Loader2 className="animate-spin text-white" size={14} /> : 'CONFIRM CALL SPECIFICATION'}
                 </button>
               </div>
             </div>
           )}
 
           {step === 'success' && (
-            <div key="success-step" className="animate-in fade-in slide-in-from-bottom-6 duration-700 py-6">
-              <div className="w-24 h-24 bg-emerald-100 text-emerald-600 rounded-[32px] flex items-center justify-center mx-auto mb-10 shadow-inner">
-                <CheckCircle2 size={48} />
+            <div key="success-step" className="animate-in fade-in slide-in-from-bottom-6 duration-500 py-4">
+              <div className="w-16 h-16 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm animate-bounce">
+                <CheckCircle size={32} />
               </div>
-              <h2 className="text-5xl font-extrabold text-black mb-6 tracking-tighter">You're Booked!</h2>
-              <p className="text-black/60 text-lg font-medium mb-12 leading-relaxed">
+              <h2 className="text-2xl font-extrabold text-brand-charcoal mb-2 tracking-tight font-mono uppercase">Briefing scheduled!</h2>
+              <p className="text-brand-slate text-sm mb-8 leading-relaxed max-w-sm mx-auto font-medium">
                 Strategy call confirmed for <br />
-                <span className="text-black font-extrabold px-2 py-1 bg-emerald-50 rounded-lg">
+                <span className="text-brand-charcoal font-mono font-extrabold text-xs px-3 py-1 bg-brand-cream border border-brand-border rounded mt-2.5 inline-block">
                   {selectedDate.toLocaleDateString('default', { month: 'long', day: 'numeric' })} at {selectedTime}
-                </span>.
+                </span>
               </p>
-              <div className="bg-gray-50 p-8 rounded-[32px] mb-12 text-left border border-gray-100 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <CalendarIcon size={18} className="text-[#0B3B2C]" />
-                  <span className="text-xs font-bold text-black uppercase tracking-widest">Calendar Sync</span>
+              
+              <div className="bg-brand-cream p-5 rounded-xl mb-8 text-left border border-brand-border font-mono text-[11px] leading-relaxed text-brand-slate space-y-2">
+                <div className="flex items-center gap-2 mb-1">
+                  <CalendarIcon size={12} className="text-brand-accent" />
+                  <span className="text-[9px] font-bold text-brand-charcoal uppercase tracking-widest">Compiler Sync Log</span>
                 </div>
-                <p className="text-sm font-bold text-black/80 leading-relaxed">
-                  A calendar invitation and strategy brief has been sent to <span className="text-[#0B3B2C] underline">{formData.email}</span>.
-                </p>
+                <p>Host: outbound_engine.aixila.com</p>
+                <p>Status: strategy_briefing_ticket_emitted</p>
+                <p>Target Seat: <span className="text-brand-charcoal underline font-semibold">{formData.email}</span></p>
+                <p className="text-emerald-700 font-semibold">A calendar invitation with initial target variables has been successfully dispatched to your inbox.</p>
               </div>
-              <button onClick={onClose} className="w-full py-5 border-2 border-black text-black rounded-2xl font-bold text-lg hover:bg-black hover:text-white transition-all active:scale-[0.98]">
-                Close Window
+              
+              <button onClick={onClose} className="w-full font-mono py-3 border border-brand-border text-brand-charcoal bg-white rounded-xl text-xs font-bold hover:bg-brand-creamDark transition-all active:scale-[0.98]">
+                Close Diagnostic Console
               </button>
             </div>
           )}

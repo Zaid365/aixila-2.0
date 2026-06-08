@@ -1,5 +1,8 @@
 {
-  "name": "PIPELINE - AI-Powered Outbound",
-  "description": "End-to-end outbound sales agency for custom software companies, delivering qualified meetings in healthcare, logistics, and manufacturing.",
-  "requestFramePermissions": []
+  "name": "Aixila - Pay-per-Meeting Outbound",
+  "description": "Risk-free outbound service for software dev agencies, SaaS startups, and technical founders. No sales fluff, just qualified meetings on auto-pilot.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

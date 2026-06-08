@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Terminal } from 'lucide-react';
 
 interface FooterProps {
   onOpenModal: () => void;
@@ -8,72 +7,77 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ onOpenModal }) => {
   return (
-    <footer className="bg-white pt-12 pb-12">
-      <div className="container mx-auto px-4">
-        {/* Massive CTA Section */}
-        <div className="bg-[#0B3B2C] rounded-[60px] p-12 md:p-32 text-center mb-24 relative overflow-hidden group">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5 pointer-events-none"></div>
-          <h2 className="text-6xl md:text-8xl font-bold text-white mb-8 tracking-tighter relative z-10">
-            Start Filling Your Pipeline
-          </h2>
-          <p className="text-emerald-400 text-2xl font-bold mb-10 relative z-10">
-            Ready to book meetings that actually close?
-          </p>
-          <p className="text-white/40 text-lg mb-16 max-w-2xl mx-auto relative z-10 font-medium">
-            Let's talk about getting you 4-6 qualified meetings monthly with decision-makers in healthcare, logistics, and manufacturing.
-          </p>
-          <button 
-            onClick={onOpenModal}
-            className="bg-[#1b5e4a] text-white px-12 py-5 rounded-2xl font-bold text-xl hover:bg-emerald-700 transition-all flex items-center gap-2 mx-auto relative z-10 shadow-2xl active:scale-95"
-          >
-            Let's Talk
-            <ArrowRight size={24} />
-          </button>
+    <footer className="bg-brand-creamDark border-t border-brand-border pt-20 pb-12">
+      <div className="container mx-auto px-6">
+        
+        {/* Massive Final CTA Section */}
+        <div className="bg-brand-charcoal text-white rounded-2xl p-10 md:p-16 text-center mb-20 relative overflow-hidden shadow-xl border border-brand-charcoal">
+          <div className="absolute inset-0 radial-glow opacity-30 pointer-events-none"></div>
+          
+          <div className="relative z-10 max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-6 tracking-tight leading-none">
+              Ready to terminate the Feast-Famine loop?
+            </h2>
+            <p className="text-brand-accent tracking-widest uppercase font-mono text-xs font-bold mb-6">
+              $0 retainer. Strict pay-per-meeting performance alignment.
+            </p>
+            <p className="text-neutral-300 text-sm sm:text-base leading-relaxed mb-12 max-w-2xl mx-auto font-medium">
+              We absorb 100% of the customer acquisition risk. You only talk to pre-vetted CTOs and founders in the US and UK who actively want to hire custom developers or buy premium SaaS solutions.
+            </p>
+            
+            <button 
+              onClick={onOpenModal}
+              className="bg-brand-accent hover:bg-brand-accentHover text-white px-10 py-5 rounded-xl font-extrabold text-base sm:text-lg transition-all duration-300 flex items-center gap-3.5 mx-auto active:scale-95 group shadow-lg shadow-brand-accent/20"
+            >
+              <span>Secure My Campaign Deployment</span>
+              <ArrowRight size={20} className="group-hover:translate-x-1.5 transition-transform duration-300" />
+            </button>
+          </div>
+          
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-24 px-6">
-          <div className="col-span-1">
-            <div className="flex items-center gap-2 mb-8">
-              <div className="w-8 h-8 bg-black flex items-center justify-center rounded-md">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M3 6h18M7 12h10M11 18h2" />
-                </svg>
+        {/* Footer Meta */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16 px-2">
+          
+          {/* Col 1 */}
+          <div className="md:col-span-6 space-y-4">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-white border border-brand-border flex items-center justify-center rounded-lg shadow-sm">
+                <Terminal size={14} className="text-brand-accent" />
               </div>
-              <span className="font-bold text-2xl tracking-tighter uppercase text-black">PIPELINE</span>
+              <span className="font-extrabold text-lg tracking-tight text-brand-charcoal font-mono">AIXILA</span>
             </div>
-            <p className="text-black font-bold leading-relaxed max-w-xs">
-              End-to-end outbound for custom software companies selling into complex B2B verticals.
+            <p className="text-brand-slate text-xs sm:text-sm max-w-md leading-relaxed font-semibold">
+              We compile and scale hyper-targeted cold outreach ecosystems for custom software agencies, digital dev houses, and tech startups. Built by young developers, operating with absolute engineering transparency.
             </p>
           </div>
 
-          <div>
-            <h4 className="font-bold text-black mb-8 uppercase tracking-widest text-xs">Services</h4>
-            <ul className="space-y-4">
-              <li><a href="#services" className="text-black font-bold hover:text-black/70 transition-colors">Lead Research</a></li>
-              <li><a href="#services" className="text-black font-bold hover:text-black/70 transition-colors">Multi-Channel Outreach</a></li>
-              <li><a href="#services" className="text-black font-bold hover:text-black/70 transition-colors">Meeting Qualification</a></li>
-              <li><a href="#services" className="text-black font-bold hover:text-black/70 transition-colors">ABM Campaigns</a></li>
-            </ul>
+          {/* Col 2 */}
+          <div className="md:col-span-6 md:text-right flex flex-col justify-end space-y-4">
+            <div className="space-y-1">
+              <p className="text-xs font-mono font-bold text-brand-slate uppercase tracking-widest">Active nodes</p>
+              <p className="text-brand-charcoal font-bold text-xs sm:text-sm">London, UK & Austin, TX (Serving US + UK Markets)</p>
+            </div>
+            <div className="flex gap-4 md:justify-end text-xs font-mono text-brand-slate font-bold">
+              <a href="#pain" className="hover:text-brand-accent transition-colors">The Pain Loop</a>
+              <span className="text-neutral-300 font-normal">//</span>
+              <a href="#process" className="hover:text-brand-accent transition-colors">Engine Pipeline</a>
+              <span className="text-neutral-300 font-normal">//</span>
+              <a href="#simulator" className="hover:text-brand-accent transition-colors">ROI Simulator</a>
+            </div>
           </div>
 
-          <div>
-            <h4 className="font-bold text-black mb-8 uppercase tracking-widest text-xs">Industries</h4>
-            <ul className="space-y-4">
-              <li><a href="#" className="text-black font-bold hover:text-black/70 transition-colors">Healthcare</a></li>
-              <li><a href="#" className="text-black font-bold hover:text-black/70 transition-colors">Logistics</a></li>
-              <li><a href="#" className="text-black font-bold hover:text-black/70 transition-colors">Manufacturing</a></li>
-              <li><a href="#" className="text-black font-bold hover:text-black/70 transition-colors">Supply Chain</a></li>
-            </ul>
+        </div>
+
+        {/* Copyrights and Sync status */}
+        <div className="pt-8 border-t border-brand-border flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono text-brand-slate px-2">
+          <p>© 2026 AIXILA. No sales fluff. All engine code compiled locally.</p>
+          <div className="flex items-center gap-1.5 bg-white border border-brand-border px-2.5 py-1 rounded text-brand-charcoal shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-accent pulse-neon"></span>
+            <span className="font-bold uppercase text-[9px]">SYSTEM CONDUIT ACTIVE (UK/US VERIFIED)</span>
           </div>
         </div>
 
-        <div className="pt-12 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4 px-6">
-          <p className="text-xs text-black font-bold">© 2024 PIPELINE. Built by <span className="text-black font-extrabold underline">Gen Z.</span></p>
-          <div className="flex gap-8">
-            <a href="#" className="text-xs text-black font-bold hover:text-black/70 transition-colors">Privacy</a>
-            <a href="#" className="text-xs text-black font-bold hover:text-black/70 transition-colors">Terms</a>
-          </div>
-        </div>
       </div>
     </footer>
   );

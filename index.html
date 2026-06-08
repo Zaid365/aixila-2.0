@@ -4,47 +4,83 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PIPELINE | AI-Powered Outbound</title>
+    <title>Aixila - Pay-per-Meeting Outbound for Technical Founders</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                cream: '#FAF8F5',      // Main warm background alabaster
+                creamDark: '#F4F1EB',  // Second warm layer for section offset
+                charcoal: '#0F1012',   // Primary bold body text & heavy elements
+                slate: '#3E4048',      // Soft dark grey for paragraphs
+                accent: '#FF4F00',     // Vibrant electric brand orange
+                accentHover: '#E04500',// Darker orange for hover states
+                lavender: '#E9E5FC',   // Soft beautiful lavender highlight for special items
+                purple: '#7C3AED',     // Rich purple accent
+                purpleLight: '#F3E8FF',// Lavender text background
+                card: '#FFFFFF',       // Clean card panels
+                border: '#E6E2D8',     // Thin warm line dividers
+                borderMuted: '#EFECE6' // Extremely faint border
+              },
+              obsidian: {
+                DEFAULT: '#FAF8F5',
+                card: '#FFFFFF',
+                row: '#F4F1EB',
+                border: '#E6E2D8',
+                neon: '#FF4F00',
+                neonHover: '#E04500',
+                neonMuted: 'rgba(255, 79, 0, 0.08)',
+              }
+            },
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+              mono: ['"JetBrains Mono"', 'monospace'],
+            }
+          }
+        }
+      }
+    </script>
     <!-- Google Identity Services for OAuth2 -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
       body {
         font-family: 'Plus Jakarta Sans', sans-serif;
         scroll-behavior: smooth;
-        background-color: #F9FAFB;
-      }
-      .bg-soft-gray {
-        background-color: #F8F9FA;
-      }
-      .hero-gradient {
-        background: radial-gradient(circle at 50% -20%, #eff6ff 0%, #f9fafb 50%);
-      }
-      .green-accent {
-        color: #0B3B2C;
-      }
-      .bg-deep-green {
-        background-color: #0B3B2C;
-      }
-      .card-shadow {
-        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
-      }
-      .pill-status {
-        background: rgba(11, 59, 44, 0.8);
-        backdrop-filter: blur(8px);
+        background-color: #FAF8F5;
+        color: #0F1012;
       }
       .custom-scrollbar::-webkit-scrollbar {
-        width: 4px;
+        width: 6px;
       }
       .custom-scrollbar::-webkit-scrollbar-track {
-        background: transparent;
+        background: #FAF8F5;
       }
       .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #e5e7eb;
-        border-radius: 10px;
+        background: #E6E2D8;
+        border-radius: 4px;
+      }
+      /* Warm organic line grids */
+      .tech-grid {
+        background-size: 50px 50px;
+        background-image: 
+          linear-gradient(to right, rgba(15, 16, 18, 0.035) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(15, 16, 18, 0.035) 1px, transparent 1px);
+      }
+      .radial-glow {
+        background: radial-gradient(circle at 50% 50%, rgba(255, 79, 0, 0.03) 0%, transparent 70%);
+      }
+      .pulse-neon {
+        animation: neonPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      @keyframes neonPulse {
+        0%, 100% { opacity: 0.9; }
+        50% { opacity: 0.4; }
       }
     </style>
     <script type="importmap">
@@ -59,9 +95,10 @@
       }
     }
     </script>
-  </head>
+  <link rel="stylesheet" href="/index.css">
+</head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+  <script type="module" src="/index.tsx"></script>
+</body>
 </html>

@@ -1,83 +1,79 @@
-
 import React from 'react';
-import { Target, Share2, ShieldCheck, Database, FileText, BarChart3, ArrowRight } from 'lucide-react';
+import { Target, MessageSquare, BadgeCent, Database, ArrowRight } from 'lucide-react';
 
 interface ServicesProps {
   onOpenModal: () => void;
 }
 
-const services = [
-  {
-    icon: <Target className="text-[#111827]" size={22} />,
-    title: "Lead Research & ICP Targeting",
-    description: "AI-powered prospect identification in your target verticals—logistics, healthcare, manufacturing."
-  },
-  {
-    icon: <Share2 className="text-[#111827]" size={22} />,
-    title: "Multi-Channel Outreach",
-    description: "Strategic email, LinkedIn, and cold calling sequences designed for enterprise B2B decision-makers."
-  },
-  {
-    icon: <ShieldCheck className="text-[#111827]" size={22} />,
-    title: "Meeting Qualification",
-    description: "Every meeting booked has budget, need, and authority. Zero wasted conversations."
-  },
-  {
-    icon: <Database className="text-[#111827]" size={22} />,
-    title: "Account-Based Campaigns",
-    description: "Targeted campaigns for high-value accounts with persistent, personalized engagement."
-  },
-  {
-    icon: <FileText className="text-[#111827]" size={22} />,
-    title: "Sales Collateral & Scripts",
-    description: "Custom scripts and templates tailored to your software solutions and target industries."
-  },
-  {
-    icon: <BarChart3 className="text-[#111827]" size={22} />,
-    title: "Pipeline Analytics",
-    description: "Transparent reporting on outreach performance, meeting quality, and pipeline value."
-  }
-];
-
 const Services: React.FC<ServicesProps> = ({ onOpenModal }) => {
   return (
-    <section id="services" className="bg-white pt-10 pb-20">
-      <div className="container mx-auto px-4">
-        <div className="bg-[#0B3B2C] rounded-[60px] p-12 md:p-20 relative overflow-hidden">
-          <div className="flex flex-col md:flex-row justify-between items-start mb-20 gap-8 relative z-10">
-            <div className="max-w-2xl">
-              <h2 className="text-6xl font-bold text-white mb-8 tracking-tighter">Services</h2>
-              <h3 className="text-2xl font-bold text-emerald-400 mb-4">What we deliver</h3>
-              <p className="text-white/60 text-lg leading-relaxed max-w-lg">
-                End-to-end outbound that fills your calendar with qualified meetings.
-              </p>
+    <section id="services-details" className="py-28 bg-[#FAF8F5] border-t border-brand-border relative overflow-hidden">
+      <div className="container mx-auto px-6 relative z-10">
+        
+        {/* Module Header */}
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-20 gap-8">
+          <div className="max-w-2xl">
+            <div className="font-mono text-xs font-bold text-brand-accent uppercase tracking-widest mb-3">
+              The Technology Stack
             </div>
-            <button 
-              onClick={onOpenModal}
-              className="bg-[#1b4b3c] hover:bg-[#235d4b] text-white px-8 py-3.5 rounded-full border border-white/10 transition-all flex items-center gap-2 font-bold group"
-            >
-              Schedule a Call
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </button>
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-brand-charcoal tracking-tight leading-tight">
+              A sales machine engineered for high-end tech services.
+            </h2>
+          </div>
+          
+          <button 
+            onClick={onOpenModal}
+            className="flex items-center gap-2 bg-brand-charcoal hover:bg-black px-6 py-4 rounded-xl text-xs font-bold text-white transition-all duration-300 shadow-sm active:scale-95 whitespace-nowrap self-stretch lg:self-auto justify-center uppercase tracking-widest font-mono"
+          >
+            <span>Book Strategy Session</span>
+            <ArrowRight size={14} />
+          </button>
+        </div>
+
+        {/* Feature Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          {/* Pillar 1 */}
+          <div className="bg-white border border-brand-border rounded-2xl p-8 hover:border-brand-accent/30 hover:shadow-md transition-all duration-300">
+            <div className="w-12 h-12 bg-brand-accent/5 text-brand-accent rounded-xl flex items-center justify-center mb-6 border border-brand-accent/10">
+              <Database size={20} />
+            </div>
+            <h3 className="text-xl font-bold text-brand-charcoal mb-3">Custom Technology Sourcing</h3>
+            <p className="text-brand-slate text-sm leading-relaxed mb-6 font-medium">
+              We don't search basic keywords like "Software." We scrape package JSON files, DNS records, and GitHub activities to find companies utilizing specific stacks (e.g. migrating from legacy PHP to React/NextJS), ensuring they are active, well-funded, and ready to hire structural development assistance.
+            </p>
+            <div className="h-[1px] w-full bg-brand-border/60 mb-4"></div>
+            <span className="text-[11px] font-mono text-brand-slate font-semibold">Includes: SPF audits, GitHub scanning, API lookups</span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
-            {services.map((service, index) => (
-              <div key={index} className="bg-[#134939] p-10 rounded-[32px] border border-white/5 transition-all group hover:bg-[#165a46]">
-                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-10 shadow-lg">
-                  {service.icon}
-                </div>
-                <h3 className="text-xl font-bold text-white mb-4 leading-tight">{service.title}</h3>
-                <p className="text-white/40 text-sm leading-relaxed mb-8">{service.description}</p>
-                <div className="h-[1px] w-full bg-white/5 mb-6"></div>
-                <div className="flex items-center gap-2 text-white/60 font-bold text-sm cursor-pointer hover:text-white transition-colors">
-                  Learn more
-                  <ArrowRight size={14} />
-                </div>
-              </div>
-            ))}
+          {/* Pillar 2 */}
+          <div className="bg-white border border-brand-border rounded-2xl p-8 hover:border-brand-accent/30 hover:shadow-md transition-all duration-300">
+            <div className="w-12 h-12 bg-brand-accent/5 text-brand-accent rounded-xl flex items-center justify-center mb-6 border border-brand-accent/10">
+              <MessageSquare size={20} />
+            </div>
+            <h3 className="text-xl font-bold text-brand-charcoal mb-3">Developer-fluent Copywriting</h3>
+            <p className="text-brand-slate text-sm leading-relaxed mb-6 font-medium">
+              Nothing turns off a CTO faster than sales reps who don't know the difference between Java and Javascript. We draft clean, crisp emails written in your natural technical dialect. We write about latency, technical debt, modular deployments, and database loads—conversations that earn professional respect.
+            </p>
+            <div className="h-[1px] w-full bg-brand-border/60 mb-4"></div>
+            <span className="text-[11px] font-mono text-brand-slate font-semibold">Includes: Custom copywriting logs, strict peer review</span>
           </div>
+
+          {/* Pillar 3 */}
+          <div className="bg-white border border-brand-border rounded-2xl p-8 hover:border-brand-accent/30 hover:shadow-md transition-all duration-300">
+            <div className="w-12 h-12 bg-brand-accent/5 text-brand-accent rounded-xl flex items-center justify-center mb-6 border border-brand-accent/10">
+              <BadgeCent size={20} />
+            </div>
+            <h3 className="text-xl font-bold text-brand-charcoal mb-3">Pure Pay-Per-Meeting Model</h3>
+            <p className="text-brand-slate text-sm leading-relaxed mb-6 font-medium">
+              No retainer. No setup charges. No 3-month contract commitments. You only pay for meetings that actually happen with accounts that match your exact filters. If a lead isn't qualified, doesn't show up, or isn't actually looking for developers, you pay zero dollars. This forces us to focus solely on high-value, high-intent targets.
+            </p>
+            <div className="h-[1px] w-full bg-brand-border/60 mb-4"></div>
+            <span className="text-[11px] font-mono text-brand-slate font-semibold">Includes: 100% money-back check, secure billing</span>
+          </div>
+
         </div>
+
       </div>
     </section>
   );

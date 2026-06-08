@@ -17,7 +17,7 @@ function App() {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-brand-cream text-brand-charcoal overflow-x-hidden selection:bg-brand-accent/25 selection:text-brand-charcoal">
       <Navbar onOpenModal={openModal} />
       <main>
         <Hero onOpenModal={openModal} />
